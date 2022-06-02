@@ -1,0 +1,50 @@
+#bittable tbody tr td, #bittable tbody tr th {
+    font-family: monospace;
+    font-size: 0.5em;
+    padding: 0px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  #bittable tbody tr td {
+    border: 1px solid black;
+    width: 18px;
+    color: white;
+    background-color: black;
+  }
+  
+  #bittable tbody tr .on {
+    color: black;
+    background-color: white;
+  }
+  
+  #bittable tbody tr th {
+    border: 0px solid black;
+    color: black;
+  }
+  
+  #bittable tbody tr .sign {
+    color: blue;
+  }
+  
+  #bittable tbody tr .exponent {
+    color: darkgreen;
+  }
+  
+  #bittable tbody tr .mantissa {
+    color: red;
+  }
+  
+  #bittable {
+    width: auto;
+    margin-bottom: 8px;
+    text-align: right;;
+  }
+  
+  .table {
+    margin-bottom: 4px;
+  }
+  
+  ul.pagination {
+    margin: 0px;
+  }
