@@ -69,12 +69,14 @@ function updateInfo()
 
     var statelem = document.getElementById('info'+bitcount);
     
-    var array = [];
-    array.push(uint + "u");
-    array.push("0x" + uint.toString(16));
-    array.push(intToFloat(uint, bitcount) + "f");
-    //array.push("0o" + uint.toString(8));
-    statelem.innerHTML = array.join(' ');
+    var readouts = [
+      ["unsigned", uint],
+      ["hex", "0x" + uint.toString(16)],
+      ["float", intToFloat(uint, bitcount)],
+    ];
+    statelem.innerHTML = readouts.map(function(r) {
+      return '<span class="bitrep-readout"><span class="bitrep-readout-key">' + r[0] + '</span>' + r[1] + '</span>';
+    }).join('');
   }
 }
 

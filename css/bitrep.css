@@ -1,50 +1,228 @@
-#bittable tbody tr td, #bittable tbody tr th {
-    font-family: monospace;
-    font-size: 0.5em;
-    padding: 0px;
-    text-align: center;
-    vertical-align: middle;
-  }
-  
-  #bittable tbody tr td {
-    border: 1px solid black;
-    width: 18px;
-    color: white;
-    background-color: black;
-  }
-  
-  #bittable tbody tr .on {
-    color: black;
-    background-color: white;
-  }
-  
-  #bittable tbody tr th {
-    border: 0px solid black;
-    color: black;
-  }
-  
-  #bittable tbody tr .sign {
-    color: blue;
-  }
-  
-  #bittable tbody tr .exponent {
-    color: darkgreen;
-  }
-  
-  #bittable tbody tr .mantissa {
-    color: red;
-  }
-  
-  #bittable {
-    width: auto;
-    margin-bottom: 8px;
-    text-align: right;;
-  }
-  
-  .table {
-    margin-bottom: 4px;
-  }
-  
-  ul.pagination {
-    margin: 0px;
-  }
+/* bitrep (source/playground/bitrep.weave), on top of weaver's dark theme */
+
+.bitrep {
+  --bg-card: #1b1e35;
+  --border: #3b3f5c;
+  --text: rgb(214 218 236);
+  --muted: rgb(136 142 168);
+  --accent: #7b7fd4;
+  --sign: #f472b6;
+  --exponent: #34d399;
+  --mantissa: #818cf8;
+
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 48px 0 64px;
+  color: var(--muted);
+}
+
+/* the theme turns the body black below 768px (meant for sidebar layouts) */
+html body.gray-bg {
+  background-color: rgb(6 8 24);
+}
+
+.bitrep-back {
+  display: inline-block;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
+.bitrep-back:hover,
+.bitrep-back:focus {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.bitrep .bitrep-title {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 200;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.bitrep-lede {
+  margin: 8px 0 24px;
+  font-size: 1.05em;
+}
+
+/* input */
+
+.bitrep-form {
+  margin: 0;
+}
+
+.bitrep-input {
+  width: 100%;
+  padding: 14px 18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 22px;
+  color: var(--text);
+  background: #0d1026;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.bitrep-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(123 127 212 / 0.25);
+}
+
+.bitrep-examples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 28px;
+}
+
+.bitrep-examples-label {
+  font-size: 0.85em;
+  margin-right: 2px;
+}
+
+.bitrep-example {
+  padding: 3px 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  color: var(--muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.bitrep-example:hover,
+.bitrep-example:focus {
+  color: var(--text);
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* legend */
+
+.bitrep-legend {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 14px;
+  font-size: 0.85em;
+}
+
+.bitrep-key::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: -1px;
+  background: var(--field);
+}
+
+.bitrep .sign { --field: var(--sign); }
+.bitrep .exponent { --field: var(--exponent); }
+.bitrep .mantissa { --field: var(--mantissa); }
+
+/* one card per width */
+
+.bitrep-card {
+  margin-bottom: 14px;
+  padding: 16px 18px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.bitrep-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bitrep-width {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.bitrep-format {
+  font-size: 0.85em;
+}
+
+.bitrep-bits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.bitrep-bits + .bitrep-bits {
+  margin-top: 8px;
+}
+
+.bitrep-byte {
+  display: flex;
+  gap: 2px;
+}
+
+.bitrep-bit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 22px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.bitrep-index {
+  font-size: 9px;
+  line-height: 14px;
+  color: var(--field);
+  opacity: 0.8;
+}
+
+.bitrep-value {
+  width: 22px;
+  height: 26px;
+  line-height: 24px;
+  text-align: center;
+  font-size: 12px;
+  color: rgb(136 142 168 / 0.6);
+  background: #0d1026;
+  border: 1px solid var(--border);
+  border-bottom: 2px solid var(--field);
+  border-radius: 3px;
+  transition: background 0.12s, color 0.12s;
+}
+
+.bitrep-value.on {
+  color: #0d1026;
+  font-weight: 700;
+  background: var(--field);
+  border-color: var(--field);
+}
+
+/* readouts filled in by updateInfo() */
+
+.bitrep-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin-top: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.bitrep-readout-key {
+  margin-right: 8px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}

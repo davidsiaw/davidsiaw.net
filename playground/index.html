@@ -3,8 +3,8 @@
 <!-- Generated using weaver: https://github.com/davidsiaw/weaver -->
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+<meta charset="utf-8" /><meta name="viewport" contents="width=device-width, initial-scale=1.0" />
 
     <title>david's playground</title>
 
@@ -12,13 +12,18 @@
     <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="../css/plugins/iCheck/custom.css" rel="stylesheet">
 
-    	<link href="../css/style.css" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+      <link href="../css/style-dark.css" rel="stylesheet">
 
 
     <link href="../css/animate.css" rel="stylesheet">
-    
 
-    
+    <link href="../css/front.css" rel="stylesheet">
+
+
+
+
 </head>
 
 <body class='gray-bg'>
@@ -31,7 +36,7 @@
 
 	<div class="middle-box text-center animated fadeInDown">
 		<div>
-			<header><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " style=""><div class="jumbotron" style=""><span style="font-size: 3em">playground</span></div></div></header><div class="row"><full><ul><li><a href="/playground/bitrep">bit representation</a></li></ul></full></div>
+			<div class="front"><h1 class="front-title">playground</h1><p class="front-subtitle">small experiments</p><div class="front-grid"><a href="/playground/bitrep" class="front-card"><i class="fa fa-th"></i><span class="front-card-title">bit representation</span><span class="front-card-sub">integers & floats, bit by bit</span></a><a href="/" class="front-card"><i class="fa fa-home"></i><span class="front-card-title">home</span><span class="front-card-sub">back to davidsiaw.net</span></a></div></div>
 		</div>
 	</div>
 
@@ -43,8 +48,14 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			asciimath2jax: {
+				delimiters: [['$$$MATH$$$','$$$ENDMATH$$$']]
+			}
+		});
+	</script>
     <script src="../js/MathJax/MathJax.js?config=AM_HTMLorMML-full" async></script>
-
 
 
 
@@ -64,7 +75,7 @@ $( document ).ready(function() {
 });
     </script>
 
-    
+
 
 </body>
 

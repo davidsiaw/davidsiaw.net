@@ -1,0 +1,72 @@
+/* Front page (source/index.weave), on top of weaver's dark theme */
+
+/* the theme turns the body black below 768px (meant for sidebar layouts) */
+html body.gray-bg {
+  background-color: rgb(6 8 24);
+}
+
+.front {
+  padding: 12vh 16px 0;
+}
+
+/* scoped under .front to beat the theme's `.middle-box h1 { font-size: 170px }` */
+.front .front-title {
+  font-size: 42px;
+  font-weight: 200;
+  letter-spacing: 0.04em;
+  color: rgb(214 218 236);
+  margin: 0;
+}
+
+.front-subtitle {
+  margin: 0.4em 0 2.5em;
+  font-size: 0.95em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(136 142 168);
+}
+
+.front-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.front-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 12px 18px;
+  background: #1b1e35;
+  border: 1px solid #3b3f5c;
+  border-radius: 6px;
+  color: rgb(136 142 168);
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.front-card:hover,
+.front-card:focus {
+  text-decoration: none;
+  color: rgb(214 218 236);
+  background: #23274a;
+  border-color: #7b7fd4;
+  transform: translateY(-2px);
+}
+
+.front-card .fa {
+  font-size: 1.8em;
+  color: #7b7fd4;
+  margin-bottom: 10px;
+}
+
+.front-card-title {
+  font-size: 1.15em;
+  font-weight: 600;
+  color: rgb(214 218 236);
+}
+
+.front-card-sub {
+  margin-top: 4px;
+  font-size: 0.8em;
+  color: rgb(136 142 168);
+}
