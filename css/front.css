@@ -9,6 +9,19 @@ html body.gray-bg {
   padding: 12vh 16px 0;
 }
 
+.front-back {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-size: 0.9em;
+  color: rgb(136 142 168);
+}
+
+.front-back:hover,
+.front-back:focus {
+  color: rgb(214 218 236);
+  text-decoration: none;
+}
+
 /* scoped under .front to beat the theme's `.middle-box h1 { font-size: 170px }` */
 .front .front-title {
   font-size: 42px;

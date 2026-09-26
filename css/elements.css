@@ -1,0 +1,431 @@
+/* periodic table (source/playground/elements.weave), on top of weaver's dark theme */
+
+.elements {
+  --bg-card: #1b1e35;
+  --border: #3b3f5c;
+  --text: rgb(214 218 236);
+  --muted: rgb(136 142 168);
+
+  --cat-alkali-metal: #f87171;
+  --cat-alkaline-earth-metal: #fb923c;
+  --cat-transition-metal: #facc15;
+  --cat-post-transition-metal: #a3e635;
+  --cat-metalloid: #34d399;
+  --cat-nonmetal: #22d3ee;
+  --cat-halogen: #60a5fa;
+  --cat-noble-gas: #a78bfa;
+  --cat-lanthanide: #f472b6;
+  --cat-actinide: #e879f9;
+
+  padding: 48px 0 64px;
+  color: var(--muted);
+}
+
+/* bootstrap pins .container to 750/970px below 1200px wide, which is narrower
+   than the table; on this page let it use the viewport up to its usual 1170px */
+.container:has(.elements) {
+  width: auto;
+  max-width: 1170px;
+}
+
+/* the theme turns the body black below 768px (meant for sidebar layouts) */
+html body.gray-bg {
+  background-color: rgb(6 8 24);
+}
+
+.elements a {
+  color: var(--text);
+}
+
+.elements-back {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-size: 0.9em;
+}
+
+.elements a.elements-back {
+  color: var(--muted);
+}
+
+.elements a.elements-back:hover,
+.elements a.elements-back:focus {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.elements .elements-title {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 200;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.elements-lede {
+  margin: 8px 0 20px;
+  font-size: 1.05em;
+}
+
+/* category colours */
+
+.cat-alkali-metal { --cat: var(--cat-alkali-metal); }
+.cat-alkaline-earth-metal { --cat: var(--cat-alkaline-earth-metal); }
+.cat-transition-metal { --cat: var(--cat-transition-metal); }
+.cat-post-transition-metal { --cat: var(--cat-post-transition-metal); }
+.cat-metalloid { --cat: var(--cat-metalloid); }
+.cat-nonmetal { --cat: var(--cat-nonmetal); }
+.cat-halogen { --cat: var(--cat-halogen); }
+.cat-noble-gas { --cat: var(--cat-noble-gas); }
+.cat-lanthanide { --cat: var(--cat-lanthanide); }
+.cat-actinide { --cat: var(--cat-actinide); }
+
+.elements-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-bottom: 20px;
+  font-size: 0.85em;
+}
+
+.elements-key::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: -1px;
+  background: var(--cat);
+  transition: box-shadow 0.15s;
+}
+
+.elements-key {
+  transition: color 0.15s;
+}
+
+/* hovering an element (or a group 3 marker) brightens its category in the legend */
+.elements:has(.cat-alkali-metal:is(.element, .element-marker):hover) .elements-key.cat-alkali-metal,
+.elements:has(.cat-alkaline-earth-metal:is(.element, .element-marker):hover) .elements-key.cat-alkaline-earth-metal,
+.elements:has(.cat-transition-metal:is(.element, .element-marker):hover) .elements-key.cat-transition-metal,
+.elements:has(.cat-post-transition-metal:is(.element, .element-marker):hover) .elements-key.cat-post-transition-metal,
+.elements:has(.cat-metalloid:is(.element, .element-marker):hover) .elements-key.cat-metalloid,
+.elements:has(.cat-nonmetal:is(.element, .element-marker):hover) .elements-key.cat-nonmetal,
+.elements:has(.cat-halogen:is(.element, .element-marker):hover) .elements-key.cat-halogen,
+.elements:has(.cat-noble-gas:is(.element, .element-marker):hover) .elements-key.cat-noble-gas,
+.elements:has(.cat-lanthanide:is(.element, .element-marker):hover) .elements-key.cat-lanthanide,
+.elements:has(.cat-actinide:is(.element, .element-marker):hover) .elements-key.cat-actinide {
+  color: var(--cat);
+}
+
+.elements:has(.cat-alkali-metal:is(.element, .element-marker):hover) .elements-key.cat-alkali-metal::before,
+.elements:has(.cat-alkaline-earth-metal:is(.element, .element-marker):hover) .elements-key.cat-alkaline-earth-metal::before,
+.elements:has(.cat-transition-metal:is(.element, .element-marker):hover) .elements-key.cat-transition-metal::before,
+.elements:has(.cat-post-transition-metal:is(.element, .element-marker):hover) .elements-key.cat-post-transition-metal::before,
+.elements:has(.cat-metalloid:is(.element, .element-marker):hover) .elements-key.cat-metalloid::before,
+.elements:has(.cat-nonmetal:is(.element, .element-marker):hover) .elements-key.cat-nonmetal::before,
+.elements:has(.cat-halogen:is(.element, .element-marker):hover) .elements-key.cat-halogen::before,
+.elements:has(.cat-noble-gas:is(.element, .element-marker):hover) .elements-key.cat-noble-gas::before,
+.elements:has(.cat-lanthanide:is(.element, .element-marker):hover) .elements-key.cat-lanthanide::before,
+.elements:has(.cat-actinide:is(.element, .element-marker):hover) .elements-key.cat-actinide::before {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cat) 35%, transparent), 0 0 10px var(--cat);
+}
+
+/* the table */
+
+.elements-scroll {
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.elements-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(50px, 1fr));
+  /* rows 1-7 main table, 8 is the gap above the f-block, 9-10 f-block */
+  grid-template-rows: repeat(7, auto) 14px repeat(2, auto);
+  gap: 3px;
+  min-width: 951px; /* 18 × 50px + 17 × 3px gaps */
+}
+
+.element,
+.element-marker {
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--cat) 35%, transparent);
+  background: color-mix(in srgb, var(--cat) 10%, var(--bg-card));
+}
+
+.element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* cells are buttons (they open the detail popover); undo the button styling.
+     font must come before line-height: the shorthand resets it */
+  font: inherit;
+  padding: 3px 2px 4px;
+  min-width: 0;
+  line-height: 1.15;
+  color: inherit;
+  text-align: center;
+  cursor: pointer;
+  appearance: none;
+}
+
+.element:focus-visible {
+  outline: 2px solid var(--cat);
+  outline-offset: 1px;
+}
+
+.element:hover {
+  border-color: var(--cat);
+  background: color-mix(in srgb, var(--cat) 22%, var(--bg-card));
+}
+
+.element-number {
+  align-self: flex-start;
+  padding-left: 3px;
+  font-size: 9px;
+  color: var(--muted);
+}
+
+.element-symbol {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--cat);
+}
+
+.element-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 8.5px;
+  color: var(--text);
+}
+
+.element-mass {
+  font-size: 8.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.element-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--cat);
+  cursor: default;
+  outline: none;
+}
+
+/* hovering a group 3 marker haloes the f-block row it stands for; hovering an
+   element in that row lights the marker back up. No dimming of the rest of the
+   table: that is reserved for a detail popout. */
+
+.element,
+.element-marker {
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.2s;
+}
+
+.elements-grid:has(.marker-lanthanide:is(:hover, :focus-visible)) .series-lanthanide,
+.elements-grid:has(.marker-actinide:is(:hover, :focus-visible)) .series-actinide,
+.elements-grid:has(.series-lanthanide:hover) .marker-lanthanide,
+.elements-grid:has(.series-actinide:hover) .marker-actinide,
+.element-marker:is(:hover, :focus-visible) {
+  border-color: var(--cat);
+  background: color-mix(in srgb, var(--cat) 22%, var(--bg-card));
+  box-shadow: 0 0 0 1px var(--cat), 0 0 14px color-mix(in srgb, var(--cat) 55%, transparent);
+}
+
+.elements-attribution {
+  margin-top: 28px;
+  font-size: 0.8em;
+  line-height: 1.6;
+}
+
+/* detail popover (js/elements.js): a modal <dialog>, which dims the page behind it */
+
+.element-dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  overflow: visible;
+}
+
+.element-dialog::backdrop {
+  background: rgb(3 4 12 / 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.element-dialog[open] {
+  animation: element-dialog-in 0.16s ease-out;
+}
+
+@keyframes element-dialog-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+
+/* no page scrolling behind the popover */
+body:has(.element-dialog[open]) {
+  overflow: hidden;
+}
+
+.element-dialog-card {
+  position: relative;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 22px 24px 20px;
+  background: var(--bg-card);
+  border: 1px solid color-mix(in srgb, var(--cat) 45%, var(--border));
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 0.5), 0 0 30px color-mix(in srgb, var(--cat) 15%, transparent);
+}
+
+.element-dialog-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.element-dialog-close:hover,
+.element-dialog-close:focus-visible {
+  color: var(--text);
+  background: rgb(255 255 255 / 0.06);
+  outline: none;
+}
+
+.element-dialog-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-right: 32px;
+}
+
+.element-dialog-tile {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  width: 72px;
+  height: 72px;
+  padding: 5px 6px;
+  border: 1px solid var(--cat);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--cat) 16%, var(--bg-card));
+}
+
+.element-dialog-tile .element-number {
+  padding: 0;
+  font-size: 11px;
+}
+
+.element-dialog-tile .element-symbol {
+  margin-top: 2px;
+  font-size: 32px;
+  line-height: 1;
+  text-align: center;
+}
+
+.element-dialog-head h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--text);
+}
+
+.element-dialog-category {
+  font-size: 0.9em;
+  color: var(--cat);
+}
+
+.element-dialog-summary {
+  margin: 0 0 16px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.element-dialog-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 0 0 16px;
+  font-size: 0.9em;
+}
+
+.element-dialog-facts dt {
+  font-weight: normal;
+  color: var(--muted);
+}
+
+.element-dialog-facts dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.element-dialog-source {
+  font-size: 0.9em;
+}
+
+/* discovery timeline (js/elements.js): elements discovered after the chosen
+   year become empty dashed slots that can't be hovered or clicked */
+
+.elements-timeline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  font-size: 0.9em;
+}
+
+.elements-timeline-label {
+  flex: none;
+  margin: 0;
+  font-weight: normal;
+}
+
+.elements-timeline-slider {
+  flex: 1;
+  min-width: 120px;
+  accent-color: #7b7fd4;
+  cursor: pointer;
+}
+
+.elements-timeline-output {
+  flex: none;
+  min-width: 17ch;
+  text-align: right;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.element > span {
+  transition: opacity 0.2s;
+}
+
+.element.undiscovered,
+.element-marker.undiscovered {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--border);
+  pointer-events: none;
+}
+
+.element.undiscovered > span {
+  opacity: 0;
+}
+
+/* the marker's label is bare text, not spans */
+.element-marker.undiscovered {
+  color: transparent;
+}
