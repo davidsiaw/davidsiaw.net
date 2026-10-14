@@ -1,0 +1,331 @@
+/* chart of nuclides (source/playground/nuclides.weave), on top of weaver's dark theme */
+
+.nuclides {
+  --bg-card: #1b1e35;
+  --bg-inset: #0d1026;
+  --border: #3b3f5c;
+  --text: rgb(214 218 236);
+  --muted: rgb(136 142 168);
+  --accent: #7b7fd4;
+
+  /* half-life bands; these mirror BAND_COLORS in js/nuclides.js */
+  --band-0: #664253;
+  --band-1: #d4148e;
+  --band-2: #d9434f;
+  --band-3: #e47c35;
+  --band-4: #7cc4dc;
+  --band-5: #3b7fd4;
+  --band-6: #2a4fa8;
+  --band-7: #1d2c6b;
+  --band-8: #3a3d52;
+
+  padding: 48px 0 64px;
+  color: var(--muted);
+}
+
+/* bootstrap pins .container to 750/970px below 1200px wide; let the chart use the
+   viewport up to its usual 1170px, like the periodic table */
+.container:has(.nuclides) {
+  width: auto;
+  max-width: 1170px;
+}
+
+/* the theme turns the body black below 768px (meant for sidebar layouts) */
+html body.gray-bg {
+  background-color: rgb(6 8 24);
+}
+
+.nuclides a {
+  color: var(--text);
+}
+
+.nuclides-back {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-size: 0.9em;
+}
+
+.nuclides a.nuclides-back {
+  color: var(--muted);
+}
+
+.nuclides a.nuclides-back:hover,
+.nuclides a.nuclides-back:focus {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nuclides .nuclides-title {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 200;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.nuclides-lede {
+  margin: 8px 0 20px;
+  font-size: 1.05em;
+}
+
+/* band colours */
+
+.band-0 { --band: var(--band-0); }
+.band-1 { --band: var(--band-1); }
+.band-2 { --band: var(--band-2); }
+.band-3 { --band: var(--band-3); }
+.band-4 { --band: var(--band-4); }
+.band-5 { --band: var(--band-5); }
+.band-6 { --band: var(--band-6); }
+.band-7 { --band: var(--band-7); }
+.band-8 { --band: var(--band-8); }
+
+.nuclides-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-bottom: 16px;
+  font-size: 0.85em;
+}
+
+.nuclides-key::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: -1px;
+  background: var(--band);
+}
+
+/* toolbar: go to, top view, reset */
+
+.nuclides-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.nuclides-find {
+  flex: 0 1 260px;
+  margin: 0;
+}
+
+.nuclides-find-input,
+.nuclides-button {
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.9em;
+}
+
+.nuclides-find-input {
+  width: 100%;
+  padding: 0 10px;
+  background: var(--bg-inset);
+  color: var(--text);
+  transition: border-color 0.15s;
+}
+
+.nuclides-find-input::placeholder {
+  color: var(--muted);
+}
+
+.nuclides-find-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.nuclides-find-input.nuclides-find-miss {
+  border-color: var(--band-2);
+}
+
+.nuclides-button {
+  padding: 0 12px;
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.nuclides-button:hover,
+.nuclides-button:focus-visible {
+  background: #23274a;
+}
+
+/* the chart */
+
+.nuclides-stage {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgb(6 8 24);
+}
+
+.nuclides-canvas {
+  display: block;
+  width: 100%;
+  height: min(72vh, 720px);
+  min-height: 320px;
+  /* the canvas handles drags and pinches itself */
+  touch-action: none;
+  outline: none;
+}
+
+.nuclides-stage:has(.nuclides-canvas:focus-visible) {
+  border-color: var(--accent);
+}
+
+.nuclides-hint {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  margin: 0;
+  padding: 2px 6px;
+  border-radius: 3px;
+  /* the bars run underneath it */
+  background: rgb(6 8 24 / 75%);
+  font-size: 0.75em;
+  pointer-events: none;
+}
+
+/* the hint matches the input device: mouse controls, or touch on touch screens */
+.nuclides-hint-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .nuclides-hint-mouse {
+    display: none;
+  }
+
+  .nuclides-hint-touch {
+    display: inline;
+  }
+}
+
+.nuclides-no-webgl .nuclides-canvas,
+.nuclides-no-webgl .nuclides-hint {
+  display: none;
+}
+
+.nuclides-no-webgl .nuclides-info {
+  position: static;
+  display: block;
+  padding: 24px;
+}
+
+/* details of the hovered or selected nuclide, in the chart's corner */
+
+.nuclides-info {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 250px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+  color: var(--text);
+  font-size: 0.85em;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.nuclides-info.nuclides-info-open {
+  opacity: 1;
+}
+
+.nuclides-info-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.nuclides-info-head strong {
+  display: block;
+  font-weight: 600;
+}
+
+.nuclides-info-tile {
+  flex: none;
+  min-width: 46px;
+  height: 40px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--band);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 40px;
+  text-align: center;
+}
+
+.nuclides-info-tile sup {
+  margin-right: 1px;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* light bands need dark text */
+.nuclides-info-tile.band-4 {
+  color: #10132a;
+}
+
+.nuclides-info-band {
+  color: var(--muted);
+}
+
+.nuclides-info dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 10px;
+  margin: 0;
+}
+
+.nuclides-info dt {
+  font-weight: normal;
+  color: var(--muted);
+}
+
+.nuclides-info dd {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.95em;
+}
+
+.nuclides-attribution {
+  margin-top: 28px;
+  font-size: 0.8em;
+  line-height: 1.6;
+}
+
+/* phones: the details go under the chart rather than over it */
+@media (max-width: 600px) {
+  .nuclides-canvas {
+    height: 60vh;
+  }
+
+  .nuclides-info {
+    position: static;
+    width: auto;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    display: none;
+  }
+
+  .nuclides-info.nuclides-info-open {
+    display: block;
+  }
+
+  .nuclides-hint {
+    top: 8px;
+    bottom: auto;
+  }
+}
